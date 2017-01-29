@@ -1,0 +1,100 @@
+\documentclass[11pt]{article}
+\usepackage{fullpage,amsmath,amsfonts,mathpazo,microtype,nicefrac,graphicx,verbatimbox,listings,hyperref,enumitem,booktabs,mathtools,amssymb,float,subcaption}
+\usepackage{enumitem}
+\title{
+\vspace{1cm}
+\textmd{\textbf{STAT 149 Generalized Linear Models: Homework 1}}\\
+% \normalsize\vspace{0.1in}\small{Due\ on\ \hmwkDueDate}\\
+% \vspace{0.1in}\large{\textit{\hmwkClassInstructor\ \hmwkClassTime}}
+}
+
+\author{\textbf{Nikhila Ravi}}
+\date{\today} % Insert date here if you want it to appear below your name
+
+%----------------------------------------------------------------------------------------
+
+\begin{document}
+
+%http://link.springer.com/chapter/10.1007%2F978-3-642-35527-1_44
+%https://www.quora.com/Can-machine-learning-predict-stock-prices
+%http://file.scirp.org/pdf/SN_2015070917142293.pdf
+%http://journals.plos.org/plosone/article?id=10.1371/journal.pone.0138441
+
+\maketitle
+
+\lstset{language=Python, basicstyle=\footnotesize} % set language as python
+
+\section*{Question 1}
+\begin{enumerate}[label=(\alph*)]
+\item Number of app downloads out of 100 iPhone users: $Y \sim Bin(100, p)$ with $p$ unknown 
+\item Babies born on a single day in Boston: $Y \sim Po(\mu)$ with $\mu$ unknown 
+\item Initial weight of male enrolling in diet: 
+\item Initial weight of person enrolling in diet: 
+\item Person liked/disliked star wars movie:  $Y \sim Bern(p)$ with $p$ unknown 
+\item Coin flips with {1,2} as outcome set: alternative distribution
+\item Num hairs in a random Big Mac: $Y \sim N(\mu, \sigma^2)$ with $\mu, \sigma^2$ unknown 
+\item At least 1 hair in a random Big Mac: $Y \sim Bern(p)$ with $p$ unknown 
+\item Actual amount of Pepsi in a can: $Y \sim N(\mu, \sigma^2)$ with $\mu, \sigma^2$ unknown
+\item Num times Trump says 'MAGA' in first three months: $Y \sim Po(\mu)$ with $\mu$ unknown 
+\item Salary of quant on wall street: $Y \sim N(\mu, \sigma^2)$ with $\mu, \sigma^2$ unknown but $\mu$ likely to be very large!
+\item Num hospital workers out of 20 who have had the flu: alternative (cannot assume trial of each person is independent as flu can be spread by contact with other people)
+\end{enumerate}
+
+\section*{Question 2}
+
+\begin{enumerate}[label=(\alph*)]
+\item Log likelihood:
+$$ l(\mu) = -2\mu + (y_1 + y_2)log(\mu) - log(y_{1}! + y_{2}!) $$ \\
+First derivative:
+$$ l'(\mu) = -2 + (y_1 + y_2)\frac{1}{\mu}$$ \\
+Second derivative:
+$$ l''(\mu) = -(y_1 + y_2)\frac{1}{\mu^2}$$ \\
+\item Maximum Likelihood estimate:
+$$ \mu = \frac{y_1 + y_2}{2} $$ \\
+$$ l''(\frac{y_1 + y_2}{2}) =  -\frac{4}{y_1 + y_2}$$ \\
+As the Poission distribution is positive valued $ y_1, y_2 > 0$, so $l''(\mu) < 0 $
+\item Newton Raphson Update formula:
+$$ \mu^{(i+1)} = \mu^{(i)}  - \frac{l'(\mu)}{l''(\mu)} \\ $$
+$$ \mu^{(i+1)}  = \mu^{(i)} ) - \frac{-2 + (y_1 + y_2)\frac{1}{\mu^{(i)}}}{-(y_1 + y_2)\frac{1}{(\mu^{(i)})^2}}  $$
+\item Fisher Scoring Update formula:
+$$ \mu^{(i+1)}  = \mu^{(i)}  - \frac{l'(\mu)}{E[l''(\mu)]} \\ $$
+$$ \mu^{(i+1)} = \mu^{(i)}  - \frac{-2 + (y_1 + y_2)\frac{1}{\mu^{(i)}}}{\frac{-2}{\mu^{(i)}}}  $$
+\item MLE Estimate using $y_1 = 3$ and $y_2 = 5$:
+$$ \mu = \frac{8}{2}  = 4$$ \\
+Newton Raphson converges after 7 iterations with $\mu^{(0)} = 2.0$.
+\begin{table}[h!]
+\centering
+\caption{Newton Raphson Convergence}
+\begin{tabular}{c | c | c | c}
+iteration & $\mu$          &$ l'$                    & $l''$           \\
+\hline
+1         & 2           &                       &               \\
+2         & 3           & 2                     & -2            \\
+3         & 3.75        & 0.6666666667          & -0.8888888889 \\
+4         & 3.984375    & 0.1333333333          & -0.5688888889 \\
+5         & 3.999938965 & 0.007843137255        & -0.503929258  \\
+6         & 3.999999999 & 0.00003051804379      & -0.5000152591 \\
+7         & 4           & 0.0000000004656612873 & -0.5000000002 \\
+8         & 4           & 0                     & -0.5          \\
+9         & 4           & 0                     & -0.5          \\
+10        & 4           & 0                     & -0.5         
+\end{tabular}
+\end{table}
+
+Fisher scoring converges in one iteration.
+
+\begin{table}[h!]
+\centering
+\caption{Fisher Scoring Convergence}
+\begin{tabular}{c | c | c | c}
+iteration & $\mu$          &$ l'$                    & $l''$           \\
+\hline
+1         & 2  &    &            \\
+2         & 4  & 2  & -1        
+\end{tabular}
+\end{table}
+\end{enumerate}
+
+\section*{Question 3}
+
+\end{document}
